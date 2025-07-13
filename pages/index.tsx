@@ -1,9 +1,4 @@
-<head>
-  <title>Servat.ai | AI Investment Club</title>
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="description" content="Invest in AI startups across medicine, infrastructure, blockchain, and autonomy with Servat.ai" />
-</head>
-
+import Head from "next/head";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -13,6 +8,15 @@ import { Input } from "@/components/ui/input";
 export default function Home() {
   return (
     <div className="p-6 space-y-10">
+      <Head>
+        <title>Servat.ai | AI Investment Club</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="description"
+          content="Invest in AI startups across medicine, infrastructure, blockchain, and autonomy with Servat.ai"
+        />
+      </Head>
+
       <section className="text-center space-y-4">
         <img src="/images/servat-logo.png" alt="Servat.ai logo" className="w-32 mx-auto" />
         <h1 className="text-4xl font-bold">Welcome to Servat.ai</h1>
@@ -33,7 +37,7 @@ export default function Home() {
         </TabsList>
 
         <div className="mt-6">
-          {/* (Rest of content remains unchanged) */}
+          {/* (Tab contents remain unchanged) */}
         </div>
       </Tabs>
 
