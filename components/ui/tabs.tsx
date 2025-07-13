@@ -1,47 +1,57 @@
-import React from "react";
-import { ReactNode, useState } from "react";
+import React, { useState, Children, cloneElement, isValidElement } from "react";
 
-export function Tabs({ children, defaultValue, className = "" }: { children: ReactNode; defaultValue: string; className?: string }) {
+export function Tabs({ defaultValue, children, className }: any) {
   const [active, setActive] = useState(defaultValue);
-
   return (
     <div className={className}>
-      {React.Children.map(children, child =>
-        typeof child === "object" && child && "props" in child && child.props.__TYPE === "TabsList"
-          ? React.cloneElement(child as any, { active, setActive })
-          : typeof child === "object" && child && "props" in child && child.props.value === active
-          ? child
-          : null
-      )}
+      {Children.map(children, (child) => {
+        if (
+          isValidElement(child) &&
+          child.props.__TYPE === "TabsList"
+        ) {
+          return cloneElement(child, { active, setActive });
+        }
+
+        if (
+          isValidElement(child) &&
+          child.props.value === active
+        ) {
+          return child;
+        }
+
+        return null;
+      })}
     </div>
   );
 }
 
-export function TabsList({ children, active, setActive, className = "" }: any) {
+export function TabsList({ children, active, setActive }: any) {
   return (
-    <div className={`flex gap-2 ${className}`}>
-      {React.Children.map(children, child =>
-        React.cloneElement(child, {
-          isActive: child.props.value === active,
-          onClick: () => setActive(child.props.value),
-        })
-      )}
+    <div className="flex gap-2 flex-wrap justify-center">
+      {Children.map(children, (child) => {
+        if (
+          isValidElement(child) &&
+          child.props.__TYPE === "TabsTrigger"
+        ) {
+          return cloneElement(child, { active, setActive });
+        }
+        return null;
+      })}
     </div>
   );
 }
-TabsList.defaultProps = { __TYPE: "TabsList" };
 
-export function TabsTrigger({ children, value, isActive, onClick }: any) {
+export function TabsTrigger({ value, children, active, setActive }: any) {
+  const isActive = value === active;
   return (
     <button
-      onClick={onClick}
-      className={`px-4 py-2 border rounded ${isActive ? "bg-blue-600 text-white" : "bg-white text-black"}`}
+      onClick={() => setActive(value)}
+      className={`px-4 py-2 rounded-full border transition ${
+        isActive ? "bg-black text-white" : "bg-white text-black"
+      }`}
     >
       {children}
     </button>
   );
 }
-
-export function TabsContent({ children, value }: { children: ReactNode; value: string }) {
-  return <div>{children}</div>;
-}
+TabsTrigger.defaultPro
